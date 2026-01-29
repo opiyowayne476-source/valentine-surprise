@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💍 Will You Be My Valentine?</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap');
+
+:root {
+  --pink: #ff2f92;
+  --rose: #ff9a9e;
+  --gold: #ffd700;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  height: 100dvh;
+  overflow: hidden;
+  background: radial-gradient(circle at top, var(--pink), var(--rose), #fad0c4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Poppins, sans-serif;
+  touch-action: manipulation; /* better mobile feel */
+}
+
+.card {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(18px);
+  padding: 28px;
+  border-radius: 28px;
+  box-shadow: 0 0 60px rgba(255,0,120,0.6);
+  text-align: center;
+  z-index: 5;
+  animation: pop 1.2s ease;
+  max-width: 95vw;
+}
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+h1 {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(2.4rem, 8vw, 3.8rem);
+  color: white;
+  margin: 0.4em 0;
+  text-shadow: 0 0 18px hotpink;
+}
+
+input, button {
+  width: 260px;
+  max-width: 90%;
+  padding: 12px;
+  margin: 8px auto;
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  display: block;
+}
+
+button {
+  background: linear-gradient(45deg, #ff0066, #ff66b2);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 0 22px rgba(255,0,120,0.7);
+  transition: all 0.25s;
+}
+
+button:hover { transform: scale(1.08); }
+button:active { transform: scale(0.97); }
+
+button.lock {
+  animation: shake 0.4s;
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-6px); }
+}
+
+#reply {
+  color: white;
+  font-size: 1.4rem;
+  text-shadow: 0 0 12px pink;
+  margin-top: 16px;
+  min-height: 2em;
+}
+
+.floating, .rose, .firework {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+}
+
+.floating { animation: float 6s linear forwards; }
+.rose     { animation: fall 7s linear forwards; }
+.firework { font-size: 28px; animation: boom 1.2s ease-out forwards; }
+
+@keyframes float {
+  from { transform: translateY(110dvh); opacity: 0; }
+  to   { transform: translateY(-10dvh); opacity: 1; }
+}
+
+@keyframes fall {
+  from { transform: translateY(-10dvh) rotate(0deg); }
+  to   { transform: translateY(110dvh) rotate(360deg); }
+}
+
+@keyframes boom {
+  from { transform: scale(0.3); opacity: 1; }
+  to   { transform: scale(2.4); opacity: 0; }
+}
+
+.proposal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.25), rgba(0,0,0,0.3));
+}
+
+.ring {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 10px solid var(--gold);
+  box-shadow: 0 0 30px var(--gold), inset 0 0 20px #fff;
+  position: relative;
+  animation: ring 1.4s ease forwards;
+}
+
+.ring::after {
+  content: "💎";
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 48px;
+  filter: drop-shadow(0 0 10px white);
+}
+
+@keyframes ring {
+  from { transform: scale(0.2) rotate(-20deg); }
+  to   { transform: scale(1) rotate(0deg); }
+}
+
+.photos {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.photos img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+  box-shadow: 0 0 12px pink;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music"    preload="auto" loop src="zuchu.mp3.mp3"></audio>
+<audio id="heartbeat" preload="auto" src="zuchu.mp3.mp3"></audio>
+<audio id="victory"   preload="auto" src="zuchu.mp3.mp3"></audio>
+
+<div class="card">
+  <h1>Be My Valentine 💖</h1>
+
+  <input id="from" placeholder="Your Name ❤️">
+  <input id="to"   placeholder="her Name 💕">
+  <button onclick="sendWA()">Send on WhatsApp 💬</button>
+
+  <div class="photos">
+    <img src="you.jpeg.jpeg"  alt="" onerror="this.style.display='none'">
+    <img src="WhatsApp Image 2026-01-22 at 10.13.26 AM.jpeg"alt="" onerror="this.style.display='none'">
+  </div>
+
+  <input id="answer" placeholder="say something sweet... ❤️">
+  <button id="confirm" onclick="confirmLove()">Confirm 💎</button>
+
+  <input type="range" min="0" max="1" step="0.01" value="0.6" 
+         oninput="document.getElementById('music').volume = this.value">
+
+  <div id="reply"></div>
+</div>
+
+<div class="proposal" id="proposal">
+  <div style="text-align:center">
+    <div class="ring"></div>
+    <h1 style="margin:16px 0;color:white;text-shadow:0 0 20px #fff">YES! 💍</h1>
+    <button onclick="replyWA()">Reply on WhatsApp 💖</button>
+  </div>
+</div>
+
+<script>
+const music    = document.getElementById('music');
+const heartbeat = document.getElementById('heartbeat');
+const victory   = document.getElementById('victory');
+const replyEl   = document.getElementById('reply');
+
+music.volume = 0.6;
+
+function fadeInAudio() {
+  if (music.paused) {
+    music.play().catch(() => {
+      // Most browsers require user interaction first time
+      console.log("Waiting for user interaction to play music...");
+    });
+  }
+}
+
+function sendWA() {
+  fadeInAudio();
+  const from = document.getElementById('from').value.trim() || "Someone";
+  const to   = document.getElementById('to').value.trim()   || "You";
+
+  const msg = `💖 Valentine Surprise 💖\n\n${from} has something special for ${to} ❤️\n\nOpen this link and answer 💎\n(Proposal inside 😍)`;
+
+  const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+  window.open(url, '_blank');
+}
+
+function confirmLove() {
+  const answer = document.getElementById('answer').value.toLowerCase().trim();
+  const btn = document.getElementById('confirm');
+
+  // More flexible matching
+  const lovePhrases = ['love you', 'i love you', 'love u', 'i love u', 'love you too', 'ily', 'i love you too'];
+
+  const hasLove = lovePhrases.some(phrase => answer.includes(phrase));
+
+  if (!hasLove) {
+    btn.classList.add('lock');
+    replyEl.textContent = "Hmm... try saying you love me too 😏";
+    setTimeout(() => {
+      btn.classList.remove('lock');
+    }, 500);
+    return;
+  }
+
+  // Success path
+  replyEl.textContent = "💖 YES! Love sealed forever 💎";
+  heartbeat.play().catch(()=>{});
+  
+  setTimeout(() => {
+    victory.play().catch(()=>{});
+    document.getElementById('proposal').style.display = 'flex';
+    for(let i = 0; i < 50; i++) spawn();
+    fireworks();
+  }, 600);
+}
+
+function spawn() {
+  const icons = ["❤️","💖","💕","💎","🌹","✨"];
+  const el = document.createElement('div');
+  el.textContent = icons[Math.floor(Math.random()*icons.length)];
+  el.className = Math.random() > 0.5 ? 'floating' : 'rose';
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.fontSize = (20 + Math.random()*24) + 'px';
+  document.body.appendChild(el);
+  
+  setTimeout(() => el.remove(), 8000);
+}
+
+function fireworks() {
+  for(let i = 0; i < 35; i++){
+    const f = document.createElement('div');
+    f.className = 'firework';
+    f.textContent = ['🎆','✨','💥','🌟'][Math.floor(Math.random()*4)];
+    f.style.left = Math.random()*100 + 'vw';
+    f.style.top  = Math.random()*70 + 'vh';
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 1400);
+  }
+}
+
+function replyWA() {
+  const msg = "💍 YES YES YES! 💖 Forever starts right now~ 😍";
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank');
+}
+
+// Start spawning hearts slowly from the beginning
+setInterval(spawn, 800);
+</script>
+</body>
+</html>
